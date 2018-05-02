@@ -5,35 +5,37 @@
  * Example usage:
  *
 
+var Generator = require( 'Generator' );
+
 // Get the base event template
-var activeEvent = getActiveEventBase();
-var termEvent   = getTerminatedEventBase();
+var activeEvent = Generator.getActiveEventBase();
+var termEvent   = Generator.getTerminatedEventBase();
 
 // Generate a "fake" GUID. 
-var eventID     = generateBadGUID();
+var eventID     = Generator.generateBadGUID();
 
 // Get some random event and recipient data
-var eventData = getSampleEventData();
-var recipData = getSampleRecipient();
-var resolvedRecipData = getResolvedRecipients();
+var eventData = Generator.getSampleEventData();
+var recipData = Generator.getSampleRecipient();
+var resolvedRecipData = Generator.getResolvedRecipients();
 
 // Overwrite elements in Base Event
-activeEvent = mergeRecursive( activeEvent, eventData );
-activeEvent.event.recipients = recipData;
-activeEvent.event.id = eventID;
+activeEvent = Generator.mergeRecursive( activeEvent, eventData );
+activeEvent.recipients = recipData;
+activeEvent.id = eventID;
 
 // Ditto for terminated event
-termEvent = mergeRecursive( termEvent, eventData );
-termEvent.event.recipients.data = activeEvent.event.recipients.data.concat( resolvedRecipData );
-termEvent.event.recipients.count = termEvent.event.recipients.data.length;
-termEvent.event.recipients.total = termEvent.event.recipients.data.length;
-termEvent.event.id = eventID;
+termEvent = Generator.mergeRecursive( termEvent, eventData );
+termEvent.recipients.data = activeEvent.recipients.data.concat( resolvedRecipData );
+termEvent.recipients.count = termEvent.recipients.data.length;
+termEvent.recipients.total = termEvent.recipients.data.length;
+termEvent.id = eventID;
 
 
  */
 
 // Sample event data to override the in the template
-modules.getSampleEventData = function() {
+exports.getSampleEventData = function() {
     var eventData = [{
             "event": {
                 "form": {
@@ -98,7 +100,7 @@ modules.getSampleEventData = function() {
 
 
 
-modules.getSampleRecipient = function() {
+exports.getSampleRecipient = function() {
     var recipients = [{
             "count": 1,
             "data": [{
@@ -198,9 +200,8 @@ modules.getSampleRecipient = function() {
 
 
 
-modules.getActiveEventBase = function() {
+exports.getActiveEventBase = function() {
     return {
-        "event": {
             "bypassPhoneIntro": false,
             "created": "2018-04-27T18:21:49.921+0000",
             "escalationOverride": false,
@@ -311,16 +312,14 @@ modules.getActiveEventBase = function() {
                 "leave": "callbackonly",
                 "retry": 0
             }
-        },
-        "sourcetype": "xmatters"
-    }
+        }
 }
 
 
 
 
 
-modules.getResolvedRecipients = function() {
+exports.getResolvedRecipients = function() {
 
 	var recipients = [
     {
@@ -521,9 +520,8 @@ modules.getResolvedRecipients = function() {
 
 
 
-modules.getTerminatedEventBase = function() {
+exports.getTerminatedEventBase = function() {
     return {
-        "event": {
             "annotations": {
                 "count": 0,
                 "data": [],
@@ -690,14 +688,12 @@ modules.getTerminatedEventBase = function() {
                 "leave": "callbackonly",
                 "retry": 0
             }
-        },
-        "sourcetype": "xmatters"
-    }
+        };
 }
 
 
 
-modules.generateBadGUID = function() {
+exports.generateBadGUID = function() {
 	// 3f5a0e6f-82a9-4c2c-83ba-d859b9a4d35e
 	// Do not try this at home kids
 	var guid = [];
@@ -728,7 +724,7 @@ function getRandomInt(max) {
 
 
 
-modules.mergeRecursive = function(obj1, obj2) {
+exports.mergeRecursive = function(obj1, obj2) {
     /// https://stackoverflow.com/a/383245/3143112
 
     var obj = JSON.parse(JSON.stringify(obj1));

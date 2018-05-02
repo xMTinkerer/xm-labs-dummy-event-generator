@@ -27,30 +27,32 @@ Details of the installation go here.
 In a Integration Builder script, add all or some of the following code, depending on if you need corresponding active and terminated event pairs
 
 ```javascript
+var Generator = require( 'Generator' );
 
 // Get the base event template
-var activeEvent = getActiveEventBase();
-var termEvent   = getTerminatedEventBase();
+var activeEvent = Generator.getActiveEventBase();
+var termEvent   = Generator.getTerminatedEventBase();
 
 // Generate a "fake" GUID. 
-var eventID     = generateBadGUID();
+var eventID     = Generator.generateBadGUID();
 
 // Get some random event and recipient data
-var eventData = getSampleEventData();
-var recipData = getSampleRecipient();
-var resolvedRecipData = getResolvedRecipients();
+var eventData = Generator.getSampleEventData();
+var recipData = Generator.getSampleRecipient();
+var resolvedRecipData = Generator.getResolvedRecipients();
 
 // Overwrite elements in Base Event
-activeEvent = mergeRecursive( activeEvent, eventData );
-activeEvent.event.recipients = recipData;
-activeEvent.event.id = eventID;
+activeEvent = Generator.mergeRecursive( activeEvent, eventData );
+activeEvent.recipients = recipData;
+activeEvent.id = eventID;
 
 // Ditto for terminated event
-termEvent = mergeRecursive( termEvent, eventData );
-termEvent.event.recipients.data = activeEvent.event.recipients.data.concat( resolvedRecipData );
-termEvent.event.recipients.count = termEvent.event.recipients.data.length;
-termEvent.event.recipients.total = termEvent.event.recipients.data.length;
-termEvent.event.id = eventID;
+termEvent = Generator.mergeRecursive( termEvent, eventData );
+termEvent.recipients.data = activeEvent.recipients.data.concat( resolvedRecipData );
+termEvent.recipients.count = termEvent.recipients.data.length;
+termEvent.recipients.total = termEvent.recipients.data.length;
+termEvent.id = eventID;
+
 ```
 
 
