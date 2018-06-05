@@ -12,7 +12,7 @@ This is a utility for generating some random event data. This was built for dump
 
 
 # Files
-* [HipChat.js](HipChat.js) - This is the code for the Shared Library that abstracts the interactions with HipChat to a higher level.
+* [Generator.js](Generator.js) - The shared library for generating dummy events
 
 # Installation
 Details of the installation go here. 
